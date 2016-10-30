@@ -66,7 +66,7 @@ class ExtensibleColumnProgNN(object):
         prev_columns - Previously trained columns, either Initial or Extensible,
             we are going to create lateral connections to for the current column.
     Returns:
-        None - attaches objects to class for InitialSingleColumn.session.run()
+        None - attaches objects to class for ExtensibleSingleColumn.session.run()
     """
 
     def __init__(self, topology, activations, session, prev_columns, dtype=tf.float64):
@@ -186,7 +186,7 @@ def test_ProgNN():
 
     # Make sure the column parameters aren't changing when being used by
     # later columns.
-    
+
     # Should be a list of [0., 0., 0., ... 0.] if theta isn't changing.
     # We add 1.0 to each element to see if they were all zero with np.all().
     assert np.all(col_4.prev_columns[0].pc.get_values_flat() - th0 + 1.)
