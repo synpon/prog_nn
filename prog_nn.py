@@ -148,19 +148,32 @@ def test_ProgNN():
 
     # This pattern to evaluate the Progressive NN can be extended to a
     # arbitrarily large number of columns / models.
+
+    # Fake train the first network. h_0[-1] has information loss functions need.
     h_0 = col_0.session.run([col_0.h],
         feed_dict={col_0.o_n:fake1})
+
+    # Fake train the second network, but this time with lateral connections to
+    # fake pre-trained, constant weights from first column of Progressive NN.
     h_1 = col_1.session.run([col_1.h],
         feed_dict={col_1.o_n:fake2, col_1.prev_columns[0].o_n:fake2})
+
+    # Now fake train a third column that has lateral connections to both
+    # previously "trained" columns.
     h_2 = col_2.session.run([col_2.h],
         feed_dict={col_2.o_n:fake3,
             col_2.prev_columns[0].o_n:fake3,
             col_2.prev_columns[1].o_n:fake3})
+
+    # Fourth column / fake instance of training.
     h_3 = col_3.session.run([col_3.h],
         feed_dict={col_3.o_n:fake4,
             col_3.prev_columns[0].o_n:fake4,
             col_3.prev_columns[1].o_n:fake4,
             col_3.prev_columns[2].o_n:fake4})
+
+    # Fifth column. Notice we have to pass in n placeholder with the same
+    # obsevations to a Progressive NN with n columns.
     h_4 = col_4.session.run([col_4.h],
         feed_dict={col_4.o_n:fake5,
             col_4.prev_columns[0].o_n:fake5,
@@ -168,8 +181,14 @@ def test_ProgNN():
             col_4.prev_columns[2].o_n:fake5,
             col_4.prev_columns[3].o_n:fake5})
 
-    # Should be a list of [0., 0., 0., ... 0.] if theta isn't changing that
-    # we add 1. to each element to see if they were all zero with np.all().
+    # Anyway, you get the drift. Hope this helps someone understand
+    # Progressive Neural Networks!
+
+    # Make sure the column parameters aren't changing when being used by
+    # later columns.
+    
+    # Should be a list of [0., 0., 0., ... 0.] if theta isn't changing.
+    # We add 1.0 to each element to see if they were all zero with np.all().
     assert np.all(col_4.prev_columns[0].pc.get_values_flat() - th0 + 1.)
 
 if __name__ == "__main__":
