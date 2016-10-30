@@ -27,7 +27,7 @@ class InitialColumnProgNN(object):
         activations - A list of activation functions to use on the transforms.
         session - A TensorFlow session.
     Returns:
-        None - attaches objects to class for InitialSingleColumn.session.run()
+        None - attaches objects to class for InitialColumnProgNN.session.run()
     """
 
     def __init__(self, topology, activations, session, dtype=tf.float64):
@@ -66,7 +66,7 @@ class ExtensibleColumnProgNN(object):
         prev_columns - Previously trained columns, either Initial or Extensible,
             we are going to create lateral connections to for the current column.
     Returns:
-        None - attaches objects to class for ExtensibleSingleColumn.session.run()
+        None - attaches objects to class for ExtensibleColumnProgNN.session.run()
     """
 
     def __init__(self, topology, activations, session, prev_columns, dtype=tf.float64):
