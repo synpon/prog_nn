@@ -10,7 +10,7 @@ class ParamCollection(object):
         self._params = params
         # Have to import the session to get the values being used.
         self.sess = sess
-        self.sess.run(tf.initialize_variables(params))
+        self.sess.run(tf.variables_initializer(params))
 
     @property
     def params(self):

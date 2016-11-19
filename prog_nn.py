@@ -104,6 +104,7 @@ class ExtensibleColumnProgNN(object):
             preactivation = tf.matmul(self.h[-1],self.W[k]) + self.b[k]
             for kk in range(width):
                 U_shape = [prev_columns[kk].topology[k], topology[k+1]]
+                # Remember len(self.U) == L - 1!
                 self.U[k-1][kk] = weight_variable(U_shape)
                 # pprint(prev_columns[kk].h[k].get_shape().as_list())
                 # pprint(self.U[k-1][kk].get_shape().as_list())
@@ -133,7 +134,7 @@ def test_ProgNN():
     activations = [tf.nn.relu, tf.nn.relu, tf.nn.relu, tf.nn.softmax]
 
     session = tf.Session()
-    session.run(tf.initialize_all_variables())
+    session.run(tf.global_variables_initializer())
 
     col_0 = InitialColumnProgNN(topology1, activations, session)
     th0 = col_0.pc.get_values_flat()
