@@ -50,7 +50,6 @@ class InitialColumnProgNN(object):
             self.h.append(activations[k](tf.matmul(self.h[-1], self.W[k]) + self.b[k]))
             params.append(self.W[-1])
             params.append(self.b[-1])
-        self.h = self.h
         self.pc = ParamCollection(self.session, params)
 
 
